@@ -1,0 +1,35 @@
+Fontes:
+
+Roboto_Flex as Roboto
+Bai_Jamjuree as BaiJamjuree
+
+const roboto = Roboto({subsets: ['latin'], variable: '--font-roboto' })
+const baiJamjuree = BaiJamjuree({subsets: ['latin'], weight: 700, variable: '--font-bai-jamjuree' })
+
+
+o next ele importa a fonte e cria um variavel var(--font-roboto) para quando quiser utilizar essa fonte.
+
+após isso coloca nas propriedades e realiza a configuração no tailwind.config.js no extend: {}
+
+fontFamily: {
+sans: 'var(--font-roboto',
+}
+
+${} = interpolação 
+
+configura as cores do figma no projeto em tailwind.config.js criando no extend o colors: {
+gray: {
+50: '#eaeaea',
+100:'#bebebf',
+200: '#9e9ea0',
+300: '#727275',
+400: '#56565a',
+500: '#2c2c31',
+600: '#28282d',
+700: '#1f1f23',
+800: '#18181b',
+900: '#121215',
+}
+}
+
+e repetir o mesmo passo à passo nas demais cores purple, orange, yellow, green. (basta seguir o figma)

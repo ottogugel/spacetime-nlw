@@ -1,0 +1,8 @@
+o next.js ele identifica a estrutura de pastas, sendo as paginas da aplicação. 
+
+isso porque no src existe o page.tsx
+
+logo tem que ser criado nesse exemplo: ignite/page.tsx
+
+e assim não faz ter que utilizar outras bibliotecas de roteamento.
+

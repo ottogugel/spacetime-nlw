@@ -1,0 +1,16 @@
+no tailwind é apenas criado o globals.css
+
+nele vai ter as seguintes informações.
+
+@tailwind base;
+@tailwind componentes;
+@tailwind utilites;
+
+os demais css seram feitos com classe nos componentes. utilizando className dentro da tag.
+
+No react se utiliza className e não o class, porque o class é uma variavel reservada do javascript, e assim dando um conflito, logo se usa o className
+
+
+text-2l = deixa a fonte com 24 pixels ou seja font-size: 1.5rem, line-height: 2rem.
+font-bold = deixa a fonte em negrito ou seja font-weight: 700
+uppercase = deixa o texto todo em maisculo
