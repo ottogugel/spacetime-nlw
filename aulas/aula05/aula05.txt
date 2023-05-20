@@ -1,0 +1,13 @@
+Qual a diretiva que utilizamos no Next.js quando queremos que algo seja executado apenas no frontend?
+
+'use client'
+
+O que são Fragments no React?
+*
+
+São elementos especiais que permitem retornar múltiplos elementos sem criar um nó pai adicional na DOM.
+
+No React Native, qual método do objeto FormData é utilizado no lugar do set?
+
+
+append

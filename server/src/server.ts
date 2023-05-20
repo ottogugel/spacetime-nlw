@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import fastify from 'fastify'
-import { PrismaClient } from '@prisma/client'
+import cors from '@fastify/cors'
+import { memoriesRoutes } from './routes/memories'
 
 const app = fastify()
-const prisma = new PrismaClient()
 
 // HTTP METHOD: GET, POST, PUT, PATCH, DELETE
 // GET para listar alguma informação
@@ -12,12 +12,11 @@ const prisma = new PrismaClient()
 // PATCH para atualizar alguma informação especifica.
 // DELETE deletar alguma informação.
 
-app.get('/users', async () => {
-  const users = await prisma.user.findMany() // Consultar todos os usuários cadastrados.
-  return users
-})
-
 // API RESTFUL
+app.register(memoriesRoutes)
+app.register(cors, {
+  origin: true, // todas as URL's de front-end poderão acessar o nosso backend
+})
 
 app
   .listen({

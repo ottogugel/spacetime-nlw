@@ -33,3 +33,38 @@ gray: {
 }
 
 e repetir o mesmo passo à passo nas demais cores purple, orange, yellow, green. (basta seguir o figma)
+
+importar pacote de icons
+
+npm i lucide-react
+
+npx expo start --clear
+
+npx expo install react-native-svg
+
+npm i -D react-native-svg-transformer
+
+
+no server é necessário criar mais um Model que vai ser o de Memoria
+onde nele vai ter id, userid, coverurl, content, ispublic  e createdat e vão existir o relacionamento do usuario com a memoria, logo
+
+isso no model Memory
+user User @relation(fields: (userId), references: [id])
+e ja no model User
+memories Memory[]
+
+npx prisma migrate dev - para fazer alterações na bd.
+
+npx prisma studio
+
+npx prisma migrate reset
+
+criar um arquivo separado chamado memories.ts para ser realizado a gestão das memorias em rotas.
+
+npm i zod - validação dos ids
+
+npm i @fastify/cors - tecnica de segurança (backend) quais urls/endereços vão poder acessar a api.
+
+para colocar em produção
+
+origin: ['link do projeto']
