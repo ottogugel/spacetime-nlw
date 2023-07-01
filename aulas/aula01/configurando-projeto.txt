@@ -1,8 +1,0 @@
-dentro da pasta src
-remover os dois arquivos .svg
-
-dentro da pasta app
-remover o arquivo favicon.ico
-remover todas as informações dentro do globals.css porém deixando os @tailwind base; componentes e utilities;
-
-remover todas as informações dentro do arquivo page.tsx deixando apenas o import e o export e no return deixar um <h1>
