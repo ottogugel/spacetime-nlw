@@ -1,0 +1,185 @@
+# CLIENT_ID e CLIENT_SECRET são informações sensiveis por isso só é colocado no back-end.
+# PIXEL NO MOBILE É DEFINIDO POR DP
+# CSS-in-JS = formato de objeto
+# View é tipo um div, o text é um p, h1, logo não tem semantica.
+
+======== Configuração Github OAuth [FRONT-END] =========== 
+
+
+OAuth = permite fazer login dentro de uma aplicação usando uma conta existente em outra aplicação.
+
+"outra aplicação" = github
+
+exchange token = pode ser trocado pelo access token (permite identificar um usuário na outra aplicação, nessa situação seria no github).
+
+# Criação do OAuth no Github
+
+é necessário ir em github > settings > developer tools > após isso, oauth e criar uma aplicação.
+
+coloca o nome e com o final (DEV)
+
+em homepage url, se utiliza a página que no momento http://localhost:3000
+
+e no callback se coloca http://localhost:3000/api/auth/callback
+
+isso vai ser para a rota do front-end.
+
+# Criação dentro do Projeto VS CODE
+
+é necessário criar na raiz do projeto o arquivo .env.lock e copiar o client id 
+
+coloca GITHUB_CLIENT_ID= (id que foi gerado pelo github)
+
+após isso cria o client_secret em (Generate a new client secret) após isso é gerado um código para ser usado no back-end no server no arquivo .env
+
+# Variaveis expostas no front-end
+
+É necessário que tenha NEXT_PUBLIC_resto da linha = (id do código que foi gerado)
+
+
+# Obtendo Github code web
+
+dentro do href, colocamos o link https://github.com/login/oauth/authorize?client_id= ${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID} com a interpolação para não preencher o código que foi gerado e assim ele fica explicito. 
+
+=============================
+
+[BACK-END]
+
+# Rota de autenticação
+
+Instalar o npm i dotenv -D
+
+Instalar o npm i axios
+
+# Criação de token JWT
+
+Usar o JWT 
+
+JSON Web Token = token criado pelo nosso back-end e enviado para o front-end e ser utilizado
+nas requisições para identificar um usuário logado.
+
+npm i @fastify/jwt
+
+# Rotas autenticadas
+
+    let memory = await prisma.memory.findUniqueOrThrow({
+      where: {
+        id,
+      }
+    })
+
+    if(memory?.userId === request.user.sub) {
+      return reply.status(401).send()
+    }
+    // Se o id da pessoa que criou a memoria for diferente do usuario logado retornar o reply para 401 - não autorizado.
+
+
+[FRONT-END 2]
+
+console.log(searchParams) são todos os parametros que estão vindo no URL
+
+Instalar o npm i axios
+
+Instalar o npm jwt-decode
+
+Salvando token nos cookies no route.ts
+
+ return NextResponse.redirect(redirectURL, {
+    headers: {
+      'Set-Cookie': `token=${token}; Path=/;max-age=${cookieExpiresInSeconds};`, // Para expirar apenas com 1 mês use max-age=2592000;
+    },
+  })
+
+Exibindo perfil do usuário (Profile e auth.ts)
+
+[MOBILE]
+
+- Instalar o expo auth session
+
+Basta seguir a documentação. https://docs.expo.dev/versions/latest/sdk/auth-session/
+
+Instalando o pacote e usando o standalone apps.
+
+Depois vai apara Authentication Guide https://docs.expo.dev/guides/authentication/ e seleciona Github
+
+-  Configuração Github OAuth(Expo0
+
+Necessário criar outro OAuth Application
+
+Em callback: exp://localhost:19000/--/*
+
+Dentro do projeto tem que seguir a documentação e inserir no App.Tsx as linhas de código e no app.json tem que criar o scheme 
+
+"scheme": "nlwspacetime",
+
+ const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: 'CLIENT_ID',
+      scopes: ['identity'],
+      redirectUri: makeRedirectUri({
+        scheme: 'your.app'
+      }),
+    },
+    discovery
+  );
+
+// Endpoint
+const discovery = {
+  authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+  tokenEndpoint: 'https://github.com/login/oauth/access_token',
+  revocationEndpoint: 'https://github.com/settings/connections/applications/<CLIENT_ID>',
+};
+
+em <CLIENT_ID> botar o código que foi gerado no github: 477d8e3519df50205bd8
+
+logo: revocationEndpoint: 'https://github.com/settings/connections/applications/477d8e3519df50205bd8',
+
+- Obtendo Github 'code' mobile
+
+// useEffect é uma função para monitorar a mudança de valor numa varivel, ou seja, quando a variavel response mudar, ele vai verificar se o tipo de resposta é sucesso.
+
+verificar o ip se está vindo com o que estava anterior exp://localhost:19000/--/* caso não, copiar esse ip que veio no console.log(makeRedirectUri({
+        scheme: 'nlwspacetime',
+      }),)
+
+e colocar no callback URL exp://192.168.15.7:19000. 
+
+configurando o axios para o api.listen
+
+no server.ts tem que colocar host: '0.0.0.0' e criar uma lib/api.ts no projeto mobile com a porta do ip da máquina exemplo: http://192.168.15.7:3333.
+
+é necessário configurar o arquivo .env para o github (web) e para o github (dev)
+
+- Salvando o token no secure store
+
+instalando o npx expo install expo-secure-store - uma blibioteca para trabalhar com o storage de informações mais sensiveis.
+
+[https://docs.expo.dev/versions/latest/sdk/securestore/]
+
+se for para produção faz a configuração do app.json se for apenas para homologação vai para o usage.
+
+e no .then colocar SecureStore.setItemAsync('token', token) para salvar o token no secure store
+
+- Navegar usuário e utilizando Expo Router
+
+Instalando o npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar react-native-gesture-handler 
+
+Após isso seguir todo o passo a passo da documentação no Getting Started em [https://expo.github.io/router/docs/] 
+
+até a parte de create a new file index.js depois disso vai para If you use npm, this requires npm 8.3.0 or higher. You can install this with npm i -g npm@^8.3.0. After that, configure overrides in package.json:
+
+diante disso cria uma pasta para ficar que nem o projeto web como next cada pasta com seu arquivo.
+
+app > index.tsx 
+
+esse index.tsx vai copiar tudo o que tinha no app.tsx já que mudou a configuração pelo módulo de navegar usuário.
+
+vai para a aba de Linking
+
+importa no index.tsx import { Link } from "expo-router"; e na página https://expo.github.io/router/docs/features/linking vai para o useRouter
+
+define o router como uma variavel const router = useRouter() no index.tsx
+
+cadastra um arquivo chamado memories.tsx e coloca informações básicas como View e Text
+
+e coloca router.push('/memories') no index.tsx
