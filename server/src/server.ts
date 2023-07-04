@@ -7,6 +7,9 @@ import cors from '@fastify/cors'
 import { memoriesRoutes } from './routes/memories'
 import { authRoutes } from './routes/auth'
 import jwt from '@fastify/jwt';
+import multipart from '@fastify/multipart'
+import { uploadRoutes } from './routes/upload'
+import { resolve } from 'node:path'
 
 const app = fastify()
 
@@ -20,11 +23,20 @@ const app = fastify()
 // API RESTFUL
 app.register(memoriesRoutes)
 app.register(authRoutes)
+app.register(uploadRoutes)
+
 app.register(cors, {
   origin: true, // todas as URL's de front-end poderão acessar o nosso backend
 })
 app.register(jwt, {
   secret: 'vbvkhlckmdexr21365bv', // diferenciar os tokens gerados pelo back-end (criptografia do token)
+})
+
+app.register(multipart)
+
+app.register(require('@fastify/static'), {
+  root: resolve(__dirname, '../uploads'),  // Pasta que será estático
+  prefix: '/uploads'
 })
 
 app

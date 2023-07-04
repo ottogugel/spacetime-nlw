@@ -1,0 +1,168 @@
+[Front-end Web]
+
+- Defininando layout das rotas
+
+# Para criar uma outra página sempre colocando memories/news/page.tsx
+
+# Todo arquivo em formato page.tsx é uma rota.
+
+# Layout é tudo aquilo que vai ser igual repetido entre as páginas do projeto. Ele não muda entre as páginas.
+
+# Children é o conteúdo da página (para separar em cada página)
+
+
+- Logout do usuário
+
+Criar uma pasta dentro do auth com o nome logout e criar um route.ts pode copiar as informações do route.ts do callback porém deixando apenas o const redirectURL e o NextResponse.redirect
+
+Para deletar o cookie em Set-Cookie no route.ts definimos o max-age para 0.
+
+em token deixa vazio sem nenhuma informação.
+
+na página Profile no campo do Logout na tag <a> referenciar o link /api/auth/logout.
+
+* Caso de error na hora de tentar login pode ser referente no lib.ts estar localhost, nesse caso colocar o ip da máquina
+
+- Página de nova memória
+
+Memories/News/Page.tsx
+
+utiliza a div e faz um link juntamente com o chevronleft do lucide-react
+
+após isso faz um form e coloca label e input.
+
+instala o npm install -D @tailwindcss/forms [https://github.com/tailwindlabs/tailwindcss-forms]
+
+após isso copia o require para colocar no tailwind.config.js na parte de plugins
+
+require('@tailwindcss/forms'),
+
+por fim criar o textarea
+
+o atributo resize-none é para o usuário não redimensionar a área onde vai escrever.
+
+- Middleware de atualização
+
+Interceptar o acesso de um usuário a alguma determinada rota/endereço.
+
+Basta criar um arquivo chamado middleware.ts e configurar de acordo com a documentação [https://nextjs.org/docs/pages/building-your-application/routing/middleware]
+
+Para que isso intercepete o usuário de não acessar a rota a partir do memories.
+
+cria uma variável (const) para que o usuário vá para a página automaticamente de login caso não esteja logado e tente acessar essa rota/endereço.
+
+cadastrar essa variável com o link da rota/endereço para logar.
+
+caso não return NextResponse.next()
+
+* HttpOnly - ele não vai conseguir visualizar a informação do cookie na aba de application no DevTools, apenas na camada back-end. 
+
+e no callback configurar no route.ts uma const redirectTo = request.cookies.get('redirectTo')?.value
+
+e colocar no no redirectURL = redirecTo ?? para que se existir a informação redirectTo eu mando o usuário para essa página caso contrário mando para o home. 
+
+Ir no Hero e configurar na parte de cadastrar lembrança trocar <a> por <Link> do Next/link e colocar no href="/memories/new"
+
+* Link para uma página sempre usar o link não a ancora.
+
+[Mobile]
+
+- Definindo layout das rotas
+
+Criar uma página layout (_layout.tsx) e colocar as colocar as coisas iguais em tudo no caso ImageBackground
+
+puxando o styledstripes, fontes, imagens, if, imagebackground, statusbard
+
+Utilizar a navegação <Stack> que seria uma navegação pilha.
+
+coloca o atributo screenOptions {} = incluir código js, {{}} = indica que é um objeto. Colocar headerShown: false para desaparecer index, para tirar o fundo branco contentStyle: { backgroundColor: 'transparent'}
+
+- Personalizando rota inicial do app
+
+useState() = é uma variável que toda vez que ela for alterada o react vai alterar a interface.
+
+<> = generic 
+
+vai retornar 1 arrays, no caso dois vetores, a primeira posição o valor da variável, e a segunda uma função para atualizar o valor da variável 
+
+Criar a tag Stack.Screen = é uma forma de quais rotas existem na aplicação, colocando o atributo de name="index" que seria o index.tsx e a memories.tsx
+
+Após isso colocar o redirect={} = ele vai redirecionar o usuário para próxima rota.
+
+
+- Página de nova memória
+
+* No padrão react-native utiliza o flex-row, em vez de usar flex flex-col
+
+Copiar o conteudo da rota memories.tsx e criar uma nova rota chamada new.tsx no _layout criar um stack.screen com o name="new"
+
+importa a logo do index.tsx NLWLogo
+
+colocar a tag <Link> > colocar no <Link> atributo asChild = ele faz o touchableopacity se comportar como um link
+
+colocar a tag <TouchableOpacity> com os atributos do className
+
+colocar a tag <Icon> e importar do expo-vector-icons-feather, atribui size 16 e color #FFF
+
+para não ter problema de resolução com a statusbar utilizar useSafeAreaInsets
+
+criando uma const antes do return e depois colocando esse atributo na primeira view.
+
+criar uma nova view para o checkbox, onde vai ser o <Switch> e fazer a variavel const useState() com false com o (isPublic, setIsPublic) e atribuir no value do <Switch> juntamente ao onValueChange={setIsPublic}
+
+atribuir o trackColor {{false: 'cor' , true:'cor' }}junto ao thumbColor{''} e por fim botar um <text> com atributo font-body, text-base e text-gray-200
+
+criando agora onde vai dar upload da imagem com o touchableopacity colocando o atributo de activeOpacity com 0.7, onPress e o classname com "h-32 items-center justify-center rounded-lg border border-dashed border-gray-500 bg-black/20"
+
+por fim criar um textinput já que no reactnative não existe textarea, colocando multiline, classname, placeholdertextcolor e placeholder.
+
+criar um botão com o touchableopacity colocar o atribute de activeOpacity e uma className
+
+transformar uma View em ScrollView por causa da responsividade e trocar o atributo de style para contentContainerStyle
+
+[Back-End]
+
+- Rota de upload de arquivos
+
+Todas as requisições (rotas) que estão sendo realizadas está sendo feita em JSON (ele possui uma limitação não conseguimos enviar arquivo por ele, já que ele tem estrutura de dados em texto) [conteúdo textual]
+
+para isso instalar o plugin npm i @fastify/multipart (multipart form data) que é uma forma de envio de informações do front-end para o back-end onde é permitido qualquer tipo de envio de dado.
+
+* exemplo de onde isso foi utilizado ao realizar um formulario.
+
+após isso colocar no server.ts app.register(multipart) e criar um arquivo chamado upload.ts copiando o auth.ts também colocar no server app.register(upload)
+
+dentro do arquivo uploadRoutes copiar a variavel da documentação const data = await req.file() [https://github.com/fastify/fastify-multipart]
+
+tem como colocar atributos, onde o primeiro vai ser limits para configurar o tamanho do arquivo.
+
+* mimetype = categorização global de tipos de arquivos.
+
+fazer a validação do tamanho do arquivo e do formato se é imagem ou vídeo.
+
+criar uma variavel para ser registrado o id do arquivo e não ter questão do usuário enviar o arquivo com o mesmo nome (arquivo duplicado)
+
+exportar o randomUUid (gerador de codigo) do node:crypto e extname do node:path (extensão do arquivo)
+
+- Servindo arquivos estáticos
+
+criar uma Stream (escrever um arquivo em disco) importa o createWriteStream do node:fs
+
+importar o resolve do node:path. e colocar essa função quando vai determinar caminho entre pastas ela vai padronizar todos os sistemas operacionais.
+
+e dentro do path.resolve vou dar o caminho aonde quero salvar esse arquivo que o usuário está fazendo o upload.
+
+usar a variavel global do node ___dirname - retornar qual o diretorio que o arquivo upload.ts está.
+
+importar o pipeline do node:stream e o promisify do node:util.
+
+// Pipeline permite aguardar uma stream (o processo do upload finalizar)
+
+// Amazon S3, Google GCS, Cloudflare r2 - pode salvar arquivos que são de upload.
+
+cria uma variavel de fullURl e fileUrl
+
+instalar npm i @fastify/static (a pasta do back-end fique publica)
+
+crir um app register e exportar além do resolve do note:path
+
